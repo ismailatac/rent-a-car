@@ -25,6 +25,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public Brand add(Brand brand) {
+        validateBrand(brand);
         return repository.add(brand);
     }
 
@@ -41,5 +42,15 @@ public class BrandManager implements BrandService {
     @Override
     public Brand getById(int id) {
        return repository.getById(id);
+    }
+
+    private void validateBrand(Brand brand){
+        checkIfNameValid(brand);
+        ;
+    }
+    private void checkIfNameValid(Brand brand){
+        if(brand.getName().length() < 10 || brand.getName().length() > 20){
+            throw new IllegalArgumentException("İsim 10 karakterden uzun, 20 karakterden kısa olmalıdır!");
+        }
     }
 }
