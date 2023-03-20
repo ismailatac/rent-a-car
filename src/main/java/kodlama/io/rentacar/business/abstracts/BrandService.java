@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface BrandService {
     List<Brand> getAll();
+    Brand add(Brand brand);
+    void delete(int id);
+    Brand update(int id, Brand brand);
+    Brand getById(int id);
 }
