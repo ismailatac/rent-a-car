@@ -29,10 +29,12 @@ public class BrandsController {
         return service.update(id, brand);
     }
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id){
         service.delete(id);
     }
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Brand add(@RequestBody Brand brand){
         return service.add(brand);
     }
