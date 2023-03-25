@@ -3,54 +3,59 @@ package kodlama.io.rentacar.business.concretes;
 import kodlama.io.rentacar.business.abstracts.BrandService;
 import kodlama.io.rentacar.entities.concretes.Brand;
 import kodlama.io.rentacar.repository.abstracts.BrandRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
+//@ ler hepsinde çalışır ama optimize bir şekilde çalışmaz o yüzden her birini doğru yerde kullanmalıyız
 public class BrandManager implements BrandService {
-    private BrandRepository repository;
+
+    private final BrandRepository repository;
 
 
-    public BrandManager(BrandRepository repository) {
-        this.repository = repository;
-    }
+
 
     @Override
     public List<Brand> getAll() {
-        // iş kuralları
-        if (repository.getAll().size() == 0) throw new RuntimeException("Marka bulunamadı");
-        return repository.getAll();
+        return repository.findAll();
     }
 
     @Override
     public Brand add(Brand brand) {
-        validateBrand(brand);
-        return repository.add(brand);
+        return repository.save(brand);
     }
 
     @Override
     public void delete(int id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
     public Brand update(int id, Brand brand) {
-       return repository.update(id,brand);
+        brand.setId(id);
+        return repository.save(brand);
     }
 
     @Override
     public Brand getById(int id) {
-       return repository.getById(id);
+        checkIfBrandExists(id);
+        return repository.findById(id).orElseThrow();
     }
 
-    private void validateBrand(Brand brand){
-        checkIfNameValid(brand);
-        ;
+    private void checkIfBrandExists(int id) {
+        if(!repository.existsById(id)) throw new RuntimeException("Marka bulunamadı");
     }
-    private void checkIfNameValid(Brand brand){
-        if(brand.getName().length() < 10 || brand.getName().length() > 20){
-            throw new IllegalArgumentException("İsim 10 karakterden uzun, 20 karakterden kısa olmalıdır!");
-        }
-    }
+//    private void validateBrand(Brand brand){
+//        checkIfNameValid(brand);
+//
+//    }
+//    private void checkIfNameValid(Brand brand){
+//        if(brand.getName().length() < 10 || brand.getName().length() > 20){
+//            throw new IllegalArgumentException("İsim 10 karakterden uzun, 20 karakterden kısa olmalıdır!");
+//        }
+//    }
+
 }
