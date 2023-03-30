@@ -1,7 +1,12 @@
 package kodlama.io.rentacar.api.controllers;
 
 import kodlama.io.rentacar.business.abstracts.BrandService;
-import kodlama.io.rentacar.entities.concretes.Brand;
+import kodlama.io.rentacar.business.dto.requests.create.CreateBrandRequest;
+import kodlama.io.rentacar.business.dto.requests.update.UpdateBrandRequest;
+import kodlama.io.rentacar.business.dto.responses.create.CreateBrandResponse;
+import kodlama.io.rentacar.business.dto.responses.get.GetAllBrandsResponse;
+import kodlama.io.rentacar.business.dto.responses.get.GetBrandResponse;
+import kodlama.io.rentacar.business.dto.responses.update.UpdateBrandResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +22,16 @@ public class BrandsController {
 
 
     @GetMapping
-    public List<Brand> getAll() {
+    public List<GetAllBrandsResponse> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public Brand getById(@PathVariable  int id){
+    public GetBrandResponse getById(@PathVariable  int id){
         return service.getById(id);
     }
     @PutMapping("/{id}")
-    public Brand update(@PathVariable int id,@RequestBody  Brand brand){
+    public UpdateBrandResponse update(@PathVariable int id, @RequestBody UpdateBrandRequest brand){
         return service.update(id, brand);
     }
     @DeleteMapping("/{id}")
@@ -36,7 +41,7 @@ public class BrandsController {
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Brand add(@RequestBody Brand brand){
+    public CreateBrandResponse add(@RequestBody CreateBrandRequest brand){
         return service.add(brand);
     }
 
