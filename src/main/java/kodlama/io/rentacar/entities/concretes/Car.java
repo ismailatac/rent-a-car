@@ -26,6 +26,7 @@ public class Car {
     private State state;
     @ManyToOne
     //@JsonManagedReference
+    @JoinColumn(name = "model_id")
     private Model model;
 
 }

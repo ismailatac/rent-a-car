@@ -1,21 +1,13 @@
 package kodlama.io.rentacar.business.concretes;
 
-import kodlama.io.rentacar.business.abstracts.BrandService;
 import kodlama.io.rentacar.business.abstracts.CarService;
-import kodlama.io.rentacar.business.dto.requests.create.CreateBrandRequest;
 import kodlama.io.rentacar.business.dto.requests.create.CreateCarRequest;
-import kodlama.io.rentacar.business.dto.requests.update.UpdateBrandRequest;
 import kodlama.io.rentacar.business.dto.requests.update.UpdateCarRequest;
-import kodlama.io.rentacar.business.dto.responses.create.CreateBrandResponse;
 import kodlama.io.rentacar.business.dto.responses.create.CreateCarResponse;
-import kodlama.io.rentacar.business.dto.responses.get.GetAllBrandsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllCarsResponse;
-import kodlama.io.rentacar.business.dto.responses.get.GetBrandResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
-import kodlama.io.rentacar.business.dto.responses.update.UpdateBrandResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
-import kodlama.io.rentacar.entities.concretes.Brand;
-import kodlama.io.rentacar.repository.abstracts.BrandRepository;
+import kodlama.io.rentacar.entities.concretes.Car;
 import kodlama.io.rentacar.repository.abstracts.CarRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -34,26 +26,39 @@ public class CarManager implements CarService {
 
     @Override
     public List<GetAllCarsResponse> getAll() {
-        return null;
+        List<Car> cars = repository.findAll();
+        List<GetAllCarsResponse> response = cars.stream()
+                .map(car -> mapper.map(car,GetAllCarsResponse.class)).toList();
+        return response;
     }
 
     @Override
     public CreateCarResponse add(CreateCarRequest car) {
-        return null;
+        Car carSave = mapper.map(car, Car.class);
+        carSave.setId(0);
+        repository.save(carSave);
+        CreateCarResponse response = mapper.map(carSave,CreateCarResponse.class);
+        return response;
     }
 
     @Override
     public void delete(int id) {
-
+        repository.deleteById(id);
     }
 
     @Override
     public UpdateCarResponse update(int id, UpdateCarRequest car) {
-        return null;
+        Car updateCar = mapper.map(car, Car.class);
+        updateCar.setId(id);
+        repository.save(updateCar);
+        UpdateCarResponse response = mapper.map(updateCar,UpdateCarResponse.class);
+        return response;
     }
 
     @Override
     public GetCarResponse getById(int id) {
-        return null;
+        Car car = repository.findById(id).orElseThrow();
+        GetCarResponse response = mapper.map(car,GetCarResponse.class);
+        return response;
     }
 }
