@@ -1,12 +1,15 @@
 package kodlama.io.rentacar.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.tools.javac.Main;
 import jakarta.persistence.*;
 import kodlama.io.rentacar.entities.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,5 +31,8 @@ public class Car {
     //@JsonManagedReference
     @JoinColumn(name = "model_id")
     private Model model;
+    @OneToMany(mappedBy = "car")
+    //@JsonBackReference
+    private List<Maintenance> maintenances;
 
 }

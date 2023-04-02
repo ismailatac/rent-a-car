@@ -38,13 +38,14 @@ public class BrandManager implements BrandService {
     public CreateBrandResponse add(CreateBrandRequest brand) {
         Brand brandSave = mapper.map(brand, Brand.class);
         brandSave.setId(0);
-        repository.save(brandSave);
-        CreateBrandResponse response = mapper.map(brand,CreateBrandResponse.class);
+        Brand responseBrand = repository.save(brandSave);
+        CreateBrandResponse response = mapper.map(responseBrand,CreateBrandResponse.class);
         return response;
     }
 
     @Override
     public void delete(int id) {
+        checkIfBrandExists(id);
         repository.deleteById(id);
     }
 

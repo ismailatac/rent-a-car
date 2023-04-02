@@ -1,5 +1,6 @@
 package kodlama.io.rentacar.business.dto.responses.update;
 
+import kodlama.io.rentacar.entities.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,5 @@ public class UpdateCarResponse {
     private int modelYear;
     private String plate;
     private double dailyPrice;
+    private State state;
 }
