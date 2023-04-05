@@ -8,6 +8,7 @@ import kodlama.io.rentacar.business.dto.responses.get.GetAllCarsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
 import kodlama.io.rentacar.entities.concretes.Car;
+import kodlama.io.rentacar.entities.enums.State;
 import kodlama.io.rentacar.repository.abstracts.CarRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -25,12 +26,15 @@ public class CarManager implements CarService {
 
 
     @Override
-    public List<GetAllCarsResponse> getAll() {
+    public List<GetAllCarsResponse> getAll(boolean withoutMaintenance) {
         List<Car> cars = repository.findAll();
+        cars = checkIfWithoutMaintenanceIsTrue(cars,withoutMaintenance);
         List<GetAllCarsResponse> response = cars.stream()
                 .map(car -> mapper.map(car,GetAllCarsResponse.class)).toList();
         return response;
     }
+
+
 
     @Override
     public CreateCarResponse add(CreateCarRequest car) {
@@ -60,5 +64,15 @@ public class CarManager implements CarService {
         Car car = repository.findById(id).orElseThrow();
         GetCarResponse response = mapper.map(car,GetCarResponse.class);
         return response;
+    }
+    private  List<Car> checkIfWithoutMaintenanceIsTrue(List<Car> cars, boolean withoutMaintenance) {
+        if (withoutMaintenance == true) {
+            for (Car car : cars) {
+                if (car.getState() == State.MAINTENANCE) {
+                    cars.remove(car);
+                }
+            }
+        }
+        return cars;
     }
 }

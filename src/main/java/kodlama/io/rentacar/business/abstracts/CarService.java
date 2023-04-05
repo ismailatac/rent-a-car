@@ -10,7 +10,7 @@ import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
 import java.util.List;
 
 public interface CarService {
-    List<GetAllCarsResponse> getAll();
+    List<GetAllCarsResponse> getAll(boolean withoutMaintenance);
     CreateCarResponse add(CreateCarRequest car);
     void delete(int id);
     UpdateCarResponse update(int id, UpdateCarRequest car);
