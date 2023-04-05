@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,9 +27,9 @@ public class CarManager implements CarService {
 
 
     @Override
-    public List<GetAllCarsResponse> getAll(boolean withoutMaintenance) {
+    public List<GetAllCarsResponse> getAll(boolean showMaintenance) {
         List<Car> cars = repository.findAll();
-        cars = checkIfWithoutMaintenanceIsTrue(cars,withoutMaintenance);
+        cars = checkIfWithoutMaintenanceIsTrue(cars,showMaintenance);
         List<GetAllCarsResponse> response = cars.stream()
                 .map(car -> mapper.map(car,GetAllCarsResponse.class)).toList();
         return response;
@@ -65,14 +66,18 @@ public class CarManager implements CarService {
         GetCarResponse response = mapper.map(car,GetCarResponse.class);
         return response;
     }
-    private  List<Car> checkIfWithoutMaintenanceIsTrue(List<Car> cars, boolean withoutMaintenance) {
-        if (withoutMaintenance == true) {
+    private  List<Car> checkIfWithoutMaintenanceIsTrue(List<Car> cars, boolean isMaintenance) {
+        List<Car> cars1 = new ArrayList<>();
+        for (Car car:cars) {
+            cars1.add(car);
+        }
+        if (isMaintenance) {
             for (Car car : cars) {
                 if (car.getState() == State.MAINTENANCE) {
-                    cars.remove(car);
+                    cars1.remove(car);
                 }
             }
         }
-        return cars;
+        return cars1;
     }
 }

@@ -37,7 +37,7 @@ public class MaintenanceManager implements MaintenanceService {
     public CreateMaintenanceResponse add(CreateMaintenanceRequest maintenanceRequest) {
         Car car = getCar(maintenanceRequest.getCarId());
         checkIfCarCanBeSentToMaintenance(car);
-        updateCarState(car);
+        updateCarState(car,State.MAINTENANCE);
         Maintenance maintenance = mapper.map(maintenanceRequest, Maintenance.class);
         maintenance.setId(0);
         Maintenance savedMaintenance = repository.save(maintenance);
@@ -51,7 +51,7 @@ public class MaintenanceManager implements MaintenanceService {
     public void delete(int id) {
         GetMaintenanceResponse maintenance = this.getById(id);
         Car car = getCar(maintenance.getCarId());
-        updateCarState(car);
+        updateCarState(car,State.AVAILABLE);
         repository.deleteById(id);
     }
 
@@ -59,7 +59,7 @@ public class MaintenanceManager implements MaintenanceService {
     public UpdateMaintenanceResponse update(int id, UpdateMaintenanceRequest maintenanceRequest) {
         Car car = getCar(maintenanceRequest.getCarId());
         checkIfCarCanBeSentToMaintenance(car);
-        updateCarState(car);
+        updateCarState(car,State.MAINTENANCE);
         Maintenance maintenance = mapper.map(maintenanceRequest, Maintenance.class);
         maintenance.setId(id);
         Maintenance updatedMaintenance = repository.save(maintenance);
@@ -90,8 +90,8 @@ public class MaintenanceManager implements MaintenanceService {
         }
     }
 
-    private void updateCarState(Car car) {
-        car.setState(State.MAINTENANCE);
+    private void updateCarState(Car car, State state) {
+        car.setState(state);
         UpdateCarRequest carUpdate = mapper.map(car, UpdateCarRequest.class);
         carService.update(car.getId(),carUpdate);
     }

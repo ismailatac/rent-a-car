@@ -15,5 +15,4 @@ import java.util.List;
 public class GetBrandResponse {
     private int id;
     private String name;
-    private List<Model> models;
 }
