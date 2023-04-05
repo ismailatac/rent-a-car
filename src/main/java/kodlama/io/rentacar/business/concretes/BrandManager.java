@@ -39,8 +39,7 @@ public class BrandManager implements BrandService {
         Brand brandSave = mapper.map(brand, Brand.class);
         brandSave.setId(0);
         Brand responseBrand = repository.save(brandSave);
-        CreateBrandResponse response = mapper.map(responseBrand,CreateBrandResponse.class);
-        return response;
+        return mapper.map(responseBrand,CreateBrandResponse.class);
     }
 
     @Override
@@ -53,17 +52,15 @@ public class BrandManager implements BrandService {
     public UpdateBrandResponse update(int id, UpdateBrandRequest brand) {
         Brand updateBrand = mapper.map(brand, Brand.class);
         updateBrand.setId(id);
-        repository.save(updateBrand);
-        UpdateBrandResponse response = mapper.map(brand,UpdateBrandResponse.class);
-        return response;
+        Brand responseBrand = repository.save(updateBrand);
+        return mapper.map(responseBrand,UpdateBrandResponse.class);
     }
 
     @Override
     public GetBrandResponse getById(int id) {
         checkIfBrandExists(id);
         Brand brand = repository.findById(id).orElseThrow();
-        GetBrandResponse response = mapper.map(brand,GetBrandResponse.class);
-        return response;
+        return mapper.map(brand,GetBrandResponse.class);
     }
 
     private void checkIfBrandExists(int id) {
