@@ -69,8 +69,7 @@ public class MaintenanceManager implements MaintenanceService {
     @Override
     public GetMaintenanceResponse getById(int id) {
         Maintenance maintenance = repository.findById(id).orElseThrow();
-        GetMaintenanceResponse response = mapper.map(maintenance,GetMaintenanceResponse.class);
-        return response;
+        return mapper.map(maintenance,GetMaintenanceResponse.class);
     }
 
     private void checkIfCarCanBeSentToMaintenance(Car car) {

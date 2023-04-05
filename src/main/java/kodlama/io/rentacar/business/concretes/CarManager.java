@@ -19,12 +19,9 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-
 public class CarManager implements CarService {
-
     private final CarRepository repository;
     private final ModelMapper mapper;
-
 
     @Override
     public List<GetAllCarsResponse> getAll(boolean showMaintenance) {
@@ -41,9 +38,8 @@ public class CarManager implements CarService {
     public CreateCarResponse add(CreateCarRequest car) {
         Car carSave = mapper.map(car, Car.class);
         carSave.setId(0);
-        repository.save(carSave);
-        CreateCarResponse response = mapper.map(carSave,CreateCarResponse.class);
-        return response;
+        Car carResponse = repository.save(carSave);
+        return mapper.map(carResponse,CreateCarResponse.class);
     }
 
     @Override
@@ -55,9 +51,8 @@ public class CarManager implements CarService {
     public UpdateCarResponse update(int id, UpdateCarRequest car) {
         Car updateCar = mapper.map(car, Car.class);
         updateCar.setId(id);
-        repository.save(updateCar);
-        UpdateCarResponse response = mapper.map(updateCar,UpdateCarResponse.class);
-        return response;
+        Car carResponse = repository.save(updateCar);
+        return mapper.map(carResponse,UpdateCarResponse.class);
     }
 
     @Override

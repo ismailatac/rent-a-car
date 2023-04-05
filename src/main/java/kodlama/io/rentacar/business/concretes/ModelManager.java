@@ -33,9 +33,8 @@ public class ModelManager implements ModelService {
     public CreateModelResponse add(CreateModelRequest model) {
         Model modelSave = mapper.map(model, Model.class);
         modelSave.setId(0);
-        repository.save(modelSave);
-        CreateModelResponse response = mapper.map(modelSave,CreateModelResponse.class);
-        return response;
+        Model modelResponse = repository.save(modelSave);
+        return mapper.map(modelResponse,CreateModelResponse.class);
     }
 
     @Override
@@ -47,15 +46,13 @@ public class ModelManager implements ModelService {
     public UpdateModelResponse update(int id, UpdateModelRequest model) {
         Model updateModel = mapper.map(model, Model.class);
         updateModel.setId(id);
-        repository.save(updateModel);
-        UpdateModelResponse response = mapper.map(updateModel,UpdateModelResponse.class);
-        return response;
+        Model modelResponse = repository.save(updateModel);
+        return mapper.map(modelResponse,UpdateModelResponse.class);
     }
 
     @Override
     public GetModelResponse getById(int id) {
         Model model = repository.findById(id).orElseThrow();
-        GetModelResponse response = mapper.map(model,GetModelResponse.class);
-        return response;
+        return mapper.map(model,GetModelResponse.class);
     }
 }
