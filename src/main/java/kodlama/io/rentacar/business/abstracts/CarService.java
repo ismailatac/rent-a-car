@@ -6,6 +6,7 @@ import kodlama.io.rentacar.business.dto.responses.create.CreateCarResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllCarsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
+import kodlama.io.rentacar.entities.enums.State;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface CarService {
     void delete(int id);
     UpdateCarResponse update(int id, UpdateCarRequest car);
     GetCarResponse getById(int id);
+    void changeState(int carId, State state);
 }

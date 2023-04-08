@@ -25,8 +25,7 @@ public class CarManager implements CarService {
 
     @Override
     public List<GetAllCarsResponse> getAll(boolean showMaintenance) {
-        List<Car> cars = repository.findAll();
-        cars = checkIfWithoutMaintenanceIsTrue(cars,showMaintenance);
+        List<Car> cars = filterCarsByMaintenanceState(showMaintenance);
         List<GetAllCarsResponse> response = cars.stream()
                 .map(car -> mapper.map(car,GetAllCarsResponse.class)).toList();
         return response;
@@ -61,6 +60,14 @@ public class CarManager implements CarService {
         GetCarResponse response = mapper.map(car,GetCarResponse.class);
         return response;
     }
+
+    @Override
+    public void changeState(int carId, State state) {
+        Car car = repository.findById(carId).orElseThrow();
+        car.setState(state);
+        repository.save(car);
+    }
+
     private  List<Car> checkIfWithoutMaintenanceIsTrue(List<Car> cars, boolean isMaintenance) {
         List<Car> cars1 = new ArrayList<>();
         for (Car car:cars) {
@@ -75,4 +82,14 @@ public class CarManager implements CarService {
         }
         return cars1;
     }
+
+    private List<Car> filterCarsByMaintenanceState(boolean includeMaintenance) {
+        if (includeMaintenance) {
+            return repository.findAll();
+        }
+
+        return repository.findAllByStateIsNot(State.MAINTENANCE);
+    }
+
+
 }

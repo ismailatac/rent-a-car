@@ -17,8 +17,9 @@ import java.util.List;
 
 public interface MaintenanceService {
     List<GetAllMaintenancesResponse> getAll();
-    CreateMaintenanceResponse add(CreateMaintenanceRequest car);
+    GetMaintenanceResponse returnCarFromMaintenance(int carId);
+    CreateMaintenanceResponse add(CreateMaintenanceRequest request);
     void delete(int id);
-    UpdateMaintenanceResponse update(int id, UpdateMaintenanceRequest car);
+    UpdateMaintenanceResponse update(int id, UpdateMaintenanceRequest request);
     GetMaintenanceResponse getById(int id);
 }

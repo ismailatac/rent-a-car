@@ -14,9 +14,6 @@ import java.util.Date;
 @Getter
 @Setter
 public class CreateMaintenanceRequest {
-
     private int carId;
-    private Date sentDate;
-    private Date backDate;
-    private String description;
+    private String information;
 }
