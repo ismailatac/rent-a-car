@@ -1,9 +1,11 @@
 package kodlama.io.rentacar.business.dto.responses.update;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

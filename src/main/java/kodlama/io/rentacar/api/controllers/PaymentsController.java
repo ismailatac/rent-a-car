@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin
 @RestController
 @AllArgsConstructor
@@ -35,7 +36,7 @@ public class PaymentsController {
     }
 
     @PutMapping("/{id}")
-    public UpdatePaymentResponse update(@PathVariable int id,@Valid @RequestBody UpdatePaymentRequest request) {
+    public UpdatePaymentResponse update(@PathVariable int id, @Valid @RequestBody UpdatePaymentRequest request) {
         return service.update(id, request);
     }
 

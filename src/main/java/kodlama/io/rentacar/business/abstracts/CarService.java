@@ -12,9 +12,14 @@ import java.util.List;
 
 public interface CarService {
     List<GetAllCarsResponse> getAll(boolean showMaintenance);
+
     CreateCarResponse add(CreateCarRequest car);
+
     void delete(int id);
+
     UpdateCarResponse update(int id, UpdateCarRequest car);
+
     GetCarResponse getById(int id);
+
     void changeState(int carId, State state);
 }

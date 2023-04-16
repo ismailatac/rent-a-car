@@ -7,6 +7,7 @@ import kodlama.io.rentacar.business.dto.responses.create.CreateModelResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllModelsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetModelResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateModelResponse;
+import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.entities.concretes.Model;
 import kodlama.io.rentacar.repository.abstracts.ModelRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ModelManager implements ModelService {
@@ -25,7 +27,7 @@ public class ModelManager implements ModelService {
     public List<GetAllModelsResponse> getAll() {
         List<Model> models = repository.findAll();
         List<GetAllModelsResponse> response = models.stream()
-                .map(model -> mapper.map(model,GetAllModelsResponse.class)).toList();
+                .map(model -> mapper.map(model, GetAllModelsResponse.class)).toList();
         return response;
     }
 
@@ -34,7 +36,7 @@ public class ModelManager implements ModelService {
         Model modelSave = mapper.map(model, Model.class);
         modelSave.setId(0);
         Model modelResponse = repository.save(modelSave);
-        return mapper.map(modelResponse,CreateModelResponse.class);
+        return mapper.map(modelResponse, CreateModelResponse.class);
     }
 
     @Override
@@ -47,18 +49,19 @@ public class ModelManager implements ModelService {
         Model updateModel = mapper.map(model, Model.class);
         updateModel.setId(id);
         Model modelResponse = repository.save(updateModel);
-        return mapper.map(modelResponse,UpdateModelResponse.class);
+        return mapper.map(modelResponse, UpdateModelResponse.class);
     }
 
     @Override
     public GetModelResponse getById(int id) {
         checkIfModelExists(id);
         Model model = repository.findById(id).orElseThrow();
-        return mapper.map(model,GetModelResponse.class);
+        return mapper.map(model, GetModelResponse.class);
     }
-    private void checkIfModelExists(int id){
-        if(!repository.existsById(id)){
-            throw new RuntimeException("Model bulunamadı!");
+
+    private void checkIfModelExists(int id) {
+        if (!repository.existsById(id)) {
+            throw new BusinessException("Model bulunamadı!");
         }
     }
 }

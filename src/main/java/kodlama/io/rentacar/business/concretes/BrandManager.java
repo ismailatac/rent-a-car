@@ -7,6 +7,7 @@ import kodlama.io.rentacar.business.dto.responses.create.CreateBrandResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllBrandsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetBrandResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateBrandResponse;
+import kodlama.io.rentacar.business.rules.BrandBusinessRules;
 import kodlama.io.rentacar.entities.concretes.Brand;
 import kodlama.io.rentacar.repository.abstracts.BrandRepository;
 import lombok.AllArgsConstructor;
@@ -22,29 +23,29 @@ public class BrandManager implements BrandService {
 
     private final BrandRepository repository;
     private final ModelMapper mapper;
-
-
+    private final BrandBusinessRules rules;
 
 
     @Override
     public List<GetAllBrandsResponse> getAll() {
         List<Brand> brands = repository.findAll();
         List<GetAllBrandsResponse> response = brands.stream()
-                .map(brand -> mapper.map(brand,GetAllBrandsResponse.class)).toList();
+                .map(brand -> mapper.map(brand, GetAllBrandsResponse.class)).toList();
         return response;
     }
 
     @Override
     public CreateBrandResponse add(CreateBrandRequest brand) {
+        rules.checkIfBrandExistsByName(brand.getName());
         Brand brandSave = mapper.map(brand, Brand.class);
         brandSave.setId(0);
         Brand responseBrand = repository.save(brandSave);
-        return mapper.map(responseBrand,CreateBrandResponse.class);
+        return mapper.map(responseBrand, CreateBrandResponse.class);
     }
 
     @Override
     public void delete(int id) {
-        checkIfBrandExists(id);
+        rules.checkIfBrandExists(id);
         repository.deleteById(id);
     }
 
@@ -53,19 +54,17 @@ public class BrandManager implements BrandService {
         Brand updateBrand = mapper.map(brand, Brand.class);
         updateBrand.setId(id);
         Brand responseBrand = repository.save(updateBrand);
-        return mapper.map(responseBrand,UpdateBrandResponse.class);
+        return mapper.map(responseBrand, UpdateBrandResponse.class);
     }
 
     @Override
     public GetBrandResponse getById(int id) {
-        checkIfBrandExists(id);
+        rules.checkIfBrandExists(id);
         Brand brand = repository.findById(id).orElseThrow();
-        return mapper.map(brand,GetBrandResponse.class);
+        return mapper.map(brand, GetBrandResponse.class);
     }
 
-    private void checkIfBrandExists(int id) {
-        if(!repository.existsById(id)) throw new RuntimeException("Marka bulunamadı");
-    }
+
 //    private void validateBrand(Brand brand){
 //        checkIfNameValid(brand);
 //

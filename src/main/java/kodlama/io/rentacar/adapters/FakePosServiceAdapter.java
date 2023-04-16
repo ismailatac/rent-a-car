@@ -10,6 +10,6 @@ public class FakePosServiceAdapter implements PosService {
     @Override
     public void pay() {
         boolean isPaymentSuccessfull = new Random().nextBoolean();
-        if(!isPaymentSuccessfull) throw new RuntimeException("Ödeme reddedildi!");
+        if (!isPaymentSuccessfull) throw new RuntimeException("Ödeme reddedildi!");
     }
 }

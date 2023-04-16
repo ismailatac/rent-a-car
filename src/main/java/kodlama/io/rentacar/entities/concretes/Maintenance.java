@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -26,7 +25,6 @@ public class Maintenance {
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
-
 
 
 }

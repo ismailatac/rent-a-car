@@ -31,6 +31,6 @@ public class PaymentRequest {
     @Min(value = 1)
     private int cardExpirationMonth;
 
-    @Length(min = 3,max = 3)
+    @Length(min = 3, max = 3)
     private String cardCvv;
 }

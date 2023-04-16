@@ -8,6 +8,7 @@ import kodlama.io.rentacar.business.dto.responses.create.CreateMaintenanceRespon
 import kodlama.io.rentacar.business.dto.responses.get.GetAllMaintenancesResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetMaintenanceResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateMaintenanceResponse;
+import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.entities.concretes.Maintenance;
 import kodlama.io.rentacar.entities.enums.State;
 import kodlama.io.rentacar.repository.abstracts.MaintenanceRepository;
@@ -17,10 +18,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 
-public class MaintenanceManager implements MaintenanceService{
+public class MaintenanceManager implements MaintenanceService {
 
     private final MaintenanceRepository repository;
     private final ModelMapper mapper;
@@ -32,7 +34,7 @@ public class MaintenanceManager implements MaintenanceService{
         List<GetAllMaintenancesResponse> responses = maintenances
                 .stream()
                 .map(maintenance -> mapper.map(maintenance, GetAllMaintenancesResponse.class))
-                        .toList();
+                .toList();
         return responses;
     }
 
@@ -45,9 +47,8 @@ public class MaintenanceManager implements MaintenanceService{
         repository.save(maintenance); // Update
         carService.changeState(carId, State.AVAILABLE);
         GetMaintenanceResponse response = mapper.map(maintenance, GetMaintenanceResponse.class);
-        return  response;
+        return response;
     }
-
 
 
     @Override
@@ -94,28 +95,32 @@ public class MaintenanceManager implements MaintenanceService{
 
     private void checkIfMaintenanceExists(int id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Böyle bir bakım bilgisine ulaşılamadı!");
+            throw new BusinessException("Böyle bir bakım bilgisine ulaşılamadı!");
         }
     }
+
     private void checkIfCarIsNotUnderMaintenance(int carId) {
         if (!repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
-            throw new RuntimeException("Bakımda böyle bir araç bulunamadı!");
+            throw new BusinessException("Bakımda böyle bir araç bulunamadı!");
         }
     }
+
     private void checkCarAvailabilityForMaintenance(CreateMaintenanceRequest request) {
         if (carService.getById(request.getCarId()).getState().equals(State.RENTED)) {
-            throw new RuntimeException("Araç kirada olduğu için bakıma alınamaz!");
+            throw new BusinessException("Araç kirada olduğu için bakıma alınamaz!");
         }
     }
+
     private void checkIfCarUnderMaintenance(CreateMaintenanceRequest request) {
         if (repository.existsByCarIdAndIsCompletedIsFalse(request.getCarId())) {
-            throw new RuntimeException("Araç şuanda bakımda!");
+            throw new BusinessException("Araç şuanda bakımda!");
         }
     }
+
     private void makeCarAvailableIfCarIsCompletedIsFalse(int id) {
         int carId = repository.findById(id).get().getCar().getId();
-        if(repository.existsByCarIdAndIsCompletedIsFalse(carId)){
-            carService.changeState(carId,State.AVAILABLE);
+        if (repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
+            carService.changeState(carId, State.AVAILABLE);
         }
     }
 }

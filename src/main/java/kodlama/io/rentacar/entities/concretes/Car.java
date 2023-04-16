@@ -1,7 +1,5 @@
 package kodlama.io.rentacar.entities.concretes;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.sun.tools.javac.Main;
 import jakarta.persistence.*;
 import kodlama.io.rentacar.entities.enums.State;
 import lombok.AllArgsConstructor;

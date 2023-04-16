@@ -11,8 +11,12 @@ import java.util.List;
 
 public interface ModelService {
     List<GetAllModelsResponse> getAll();
+
     CreateModelResponse add(CreateModelRequest model);
+
     void delete(int id);
+
     UpdateModelResponse update(int id, UpdateModelRequest model);
+
     GetModelResponse getById(int id);
 }

@@ -20,28 +20,30 @@ public class ModelsController {
     private final ModelService service;
 
 
-
     @GetMapping
     public List<GetAllModelsResponse> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public GetModelResponse getById(@PathVariable  int id){
+    public GetModelResponse getById(@PathVariable int id) {
         return service.getById(id);
     }
+
     @PutMapping("/{id}")
-    public UpdateModelResponse update(@PathVariable int id, @RequestBody UpdateModelRequest model){
+    public UpdateModelResponse update(@PathVariable int id, @RequestBody UpdateModelRequest model) {
         return service.update(id, model);
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable int id) {
         service.delete(id);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateModelResponse add(@RequestBody CreateModelRequest model){
+    public CreateModelResponse add(@RequestBody CreateModelRequest model) {
         return service.add(model);
     }
 

@@ -20,28 +20,30 @@ public class CarsController {
     private final CarService service;
 
 
-
     @GetMapping
     public List<GetAllCarsResponse> getAll(@RequestParam(defaultValue = "true") boolean showMaintenance) {
         return service.getAll(showMaintenance);
     }
 
     @GetMapping("/{id}")
-    public GetCarResponse getById(@PathVariable  int id){
+    public GetCarResponse getById(@PathVariable int id) {
         return service.getById(id);
     }
+
     @PutMapping("/{id}")
-    public UpdateCarResponse update(@PathVariable int id, @RequestBody UpdateCarRequest car){
+    public UpdateCarResponse update(@PathVariable int id, @RequestBody UpdateCarRequest car) {
         return service.update(id, car);
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable int id) {
         service.delete(id);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateCarResponse add(@RequestBody CreateCarRequest car){
+    public CreateCarResponse add(@RequestBody CreateCarRequest car) {
         return service.add(car);
     }
 

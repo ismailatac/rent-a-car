@@ -7,6 +7,8 @@ import kodlama.io.rentacar.business.dto.responses.create.CreateInvoiceResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllInvoicesResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetInvoiceResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateInvoiceResponse;
+import kodlama.io.rentacar.business.rules.InvoiceBusinessRules;
+import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.entities.concretes.Invoice;
 import kodlama.io.rentacar.repository.abstracts.InvoiceRepository;
 import lombok.AllArgsConstructor;
@@ -15,11 +17,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 @AllArgsConstructor
 public class InvoiceManager implements InvoiceService {
     private final InvoiceRepository repository;
     private final ModelMapper mapper;
+    private final InvoiceBusinessRules rules;
 
     @Override
     public List<GetAllInvoicesResponse> getAll() {
@@ -34,7 +38,7 @@ public class InvoiceManager implements InvoiceService {
 
     @Override
     public GetInvoiceResponse getById(int id) {
-        checkIfInvoiceExists(id);
+        rules.checkIfInvoiceExists(id);
         Invoice invoice = repository.findById(id).orElseThrow();
         GetInvoiceResponse response = mapper.map(invoice, GetInvoiceResponse.class);
 
@@ -74,9 +78,9 @@ public class InvoiceManager implements InvoiceService {
         return invoice.getDailyPrice() * invoice.getRentedForDays();
     }
 
-    private void checkIfInvoiceExists(int id){
-        if(!repository.existsById(id)){
-            throw new RuntimeException("Fatura bilgisi bulunamadı.");
+    private void checkIfInvoiceExists(int id) {
+        if (!repository.existsById(id)) {
+            throw new BusinessException("Fatura bilgisi bulunamadı.");
         }
     }
 

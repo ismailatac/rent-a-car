@@ -1,11 +1,9 @@
 package kodlama.io.rentacar.business.dto.requests.create;
 
-import jakarta.persistence.ManyToOne;
-import kodlama.io.rentacar.entities.concretes.Car;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

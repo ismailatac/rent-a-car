@@ -9,6 +9,7 @@ import kodlama.io.rentacar.business.dto.responses.get.GetAllPaymentsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetPaymentResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdatePaymentResponse;
 import kodlama.io.rentacar.common.dto.CreateRentalPaymentRequest;
+import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.entities.concretes.Payment;
 import kodlama.io.rentacar.repository.abstracts.PaymentRepository;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PaymentManager implements PaymentService {
@@ -28,7 +30,7 @@ public class PaymentManager implements PaymentService {
     public List<GetAllPaymentsResponse> getAll() {
         List<Payment> payments = repository.findAll();
         List<GetAllPaymentsResponse> response = payments.stream()
-                .map(payment -> mapper.map(payment,GetAllPaymentsResponse.class)).toList();
+                .map(payment -> mapper.map(payment, GetAllPaymentsResponse.class)).toList();
         return response;
     }
 
@@ -41,7 +43,6 @@ public class PaymentManager implements PaymentService {
         CreatePaymentResponse response = mapper.map(payment, CreatePaymentResponse.class);
         return response;
     }
-
 
 
     @Override
@@ -67,6 +68,7 @@ public class PaymentManager implements PaymentService {
         GetPaymentResponse response = mapper.map(payment, GetPaymentResponse.class);
         return response;
     }
+
     @Override
     public void processRentalPayment(CreateRentalPaymentRequest request) {
         checkIfPaymentIsValid(request);
@@ -78,39 +80,39 @@ public class PaymentManager implements PaymentService {
     }
 
     private void checkIfPaymentIsValid(CreateRentalPaymentRequest request) {
-        if(!repository.existsByCardNumberAndCardHolderNameAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
+        if (!repository.existsByCardNumberAndCardHolderAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
                 request.getCardNumber(),
                 request.getCardHolderName(),
                 request.getCardExpirationYear(),
                 request.getCardExpirationMonth(),
                 request.getCardCvv()
-        )){
-            throw new RuntimeException("Kart bilgileriniz hatalı!");
+        )) {
+            throw new BusinessException("Kart bilgileriniz hatalı!");
         }
     }
-    private void checkIfCardExists(String cardNumber){
-        if(repository.existsByCardNumber(cardNumber)){
-            throw new RuntimeException("Kart numarası zaten kayıtlı!");
+
+    private void checkIfCardExists(String cardNumber) {
+        if (repository.existsByCardNumber(cardNumber)) {
+            throw new BusinessException("Kart numarası zaten kayıtlı!");
         }
     }
-    private void checkIfBalanceIdEnough(double balance, double price){
-        if(balance < price){
-            throw new RuntimeException("Yetersiz bakiye!");
+
+    private void checkIfBalanceIdEnough(double balance, double price) {
+        if (balance < price) {
+            throw new BusinessException("Yetersiz bakiye!");
         }
     }
 
     //    private void checkIfPaymentExists(int id) {
 //        if(repository.existsById(id)){
-//            throw new RuntimeException("Böyle bir kart var!");
+//            throw new BusinessException()("Böyle bir kart var!");
 //        }
 //    }
     private void checkIfPaymentNotExists(int id) {
-        if(!repository.existsById(id)){
-            throw new RuntimeException("Ödeme bilgisi bulunamadı!");
+        if (!repository.existsById(id)) {
+            throw new BusinessException("Ödeme bilgisi bulunamadı!");
         }
     }
-
-
 
 
 }

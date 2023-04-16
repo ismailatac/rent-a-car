@@ -12,8 +12,12 @@ import java.util.List;
 
 public interface RentalService {
     List<GetAllRentalsResponse> getAll();
+
     CreateRentalResponse add(CreateRentalRequest request);
+
     void delete(int id);
+
     UpdateRentalResponse update(int id, UpdateRentalRequest request);
+
     GetRentalResponse getById(int id);
 }
