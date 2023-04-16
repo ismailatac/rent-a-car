@@ -68,8 +68,10 @@ public class MaintenanceManager implements MaintenanceService{
     @Override
     public void delete(int id) {
         checkIfMaintenanceExists(id);
+        makeCarAvailableIfCarIsCompletedIsFalse(id);
         repository.deleteById(id);
     }
+
 
     @Override
     public UpdateMaintenanceResponse update(int id, UpdateMaintenanceRequest request) {
@@ -108,6 +110,12 @@ public class MaintenanceManager implements MaintenanceService{
     private void checkIfCarUnderMaintenance(CreateMaintenanceRequest request) {
         if (repository.existsByCarIdAndIsCompletedIsFalse(request.getCarId())) {
             throw new RuntimeException("Araç şuanda bakımda!");
+        }
+    }
+    private void makeCarAvailableIfCarIsCompletedIsFalse(int id) {
+        int carId = repository.findById(id).get().getCar().getId();
+        if(repository.existsByCarIdAndIsCompletedIsFalse(carId)){
+            carService.changeState(carId,State.AVAILABLE);
         }
     }
 }

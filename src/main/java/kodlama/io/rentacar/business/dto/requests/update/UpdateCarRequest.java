@@ -1,15 +1,11 @@
 package kodlama.io.rentacar.business.dto.requests.update;
 
 import kodlama.io.rentacar.entities.enums.State;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class UpdateCarRequest {
 
     private int modelYear;

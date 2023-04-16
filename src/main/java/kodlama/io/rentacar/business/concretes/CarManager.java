@@ -37,6 +37,7 @@ public class CarManager implements CarService {
     public CreateCarResponse add(CreateCarRequest car) {
         Car carSave = mapper.map(car, Car.class);
         carSave.setId(0);
+        carSave.setState(State.AVAILABLE);
         Car carResponse = repository.save(carSave);
         return mapper.map(carResponse,CreateCarResponse.class);
     }

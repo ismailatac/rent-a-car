@@ -52,7 +52,13 @@ public class ModelManager implements ModelService {
 
     @Override
     public GetModelResponse getById(int id) {
+        checkIfModelExists(id);
         Model model = repository.findById(id).orElseThrow();
         return mapper.map(model,GetModelResponse.class);
+    }
+    private void checkIfModelExists(int id){
+        if(!repository.existsById(id)){
+            throw new RuntimeException("Model bulunamadı!");
+        }
     }
 }

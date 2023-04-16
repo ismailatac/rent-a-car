@@ -2,17 +2,13 @@ package kodlama.io.rentacar.business.dto.requests.create;
 
 import jakarta.persistence.ManyToOne;
 import kodlama.io.rentacar.entities.concretes.Car;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class CreateMaintenanceRequest {
     private int carId;
     private String information;
