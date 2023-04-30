@@ -31,7 +31,7 @@ public class PaymentBusinessRules {
     }
 
     public void checkIfPaymentIsValid(CreateRentalPaymentRequest request) {
-        if (!repository.existsByCardNumberAndCardHolderAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
+        if (!repository.existsByCardNumberAndCardHolderNameAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
                 request.getCardNumber(),
                 request.getCardHolderName(),
                 request.getCardExpirationYear(),

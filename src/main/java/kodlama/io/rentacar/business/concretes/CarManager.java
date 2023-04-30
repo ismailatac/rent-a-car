@@ -76,7 +76,6 @@ public class CarManager implements CarService {
         if (includeMaintenance) {
             return repository.findAll();
         }
-
         return repository.findAllByStateIsNot(State.MAINTENANCE);
     }
 

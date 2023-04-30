@@ -12,13 +12,14 @@ import kodlama.io.rentacar.entities.concretes.Brand;
 import kodlama.io.rentacar.repository.abstracts.BrandRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-//@ ler hepsinde çalışır ama optimize bir şekilde çalışmaz o yüzden her birini doğru yerde kullanmalıyız
 public class BrandManager implements BrandService {
 
     private final BrandRepository repository;
@@ -27,6 +28,7 @@ public class BrandManager implements BrandService {
 
 
     @Override
+    @Cacheable(value = "brand_list")
     public List<GetAllBrandsResponse> getAll() {
         List<Brand> brands = repository.findAll();
         List<GetAllBrandsResponse> response = brands.stream()
@@ -35,6 +37,7 @@ public class BrandManager implements BrandService {
     }
 
     @Override
+    @CacheEvict(value = "brand_list", allEntries = true)
     public CreateBrandResponse add(CreateBrandRequest brand) {
         rules.checkIfBrandExistsByName(brand.getName());
         Brand brandSave = mapper.map(brand, Brand.class);

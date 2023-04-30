@@ -80,7 +80,7 @@ public class PaymentManager implements PaymentService {
     }
 
     private void checkIfPaymentIsValid(CreateRentalPaymentRequest request) {
-        if (!repository.existsByCardNumberAndCardHolderAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
+        if (!repository.existsByCardNumberAndCardHolderNameAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
                 request.getCardNumber(),
                 request.getCardHolderName(),
                 request.getCardExpirationYear(),

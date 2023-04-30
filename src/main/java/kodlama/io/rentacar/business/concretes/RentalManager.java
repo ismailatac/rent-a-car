@@ -12,6 +12,7 @@ import kodlama.io.rentacar.business.dto.responses.get.GetAllRentalsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetRentalResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateRentalResponse;
+import kodlama.io.rentacar.business.rules.InvoiceBusinessRules;
 import kodlama.io.rentacar.common.dto.CreateRentalPaymentRequest;
 import kodlama.io.rentacar.core.exceptions.BusinessException;
 import kodlama.io.rentacar.entities.concretes.Rental;
@@ -33,6 +34,7 @@ public class RentalManager implements RentalService {
     private final CarService carService;
     private final PaymentService paymentService;
     private final InvoiceService invoiceService;
+    private final InvoiceBusinessRules rules;
 
     @Override
     public List<GetAllRentalsResponse> getAll() {

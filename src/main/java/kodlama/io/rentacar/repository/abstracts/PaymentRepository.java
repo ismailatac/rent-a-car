@@ -8,7 +8,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     boolean existsByCardNumber(String cardNumber);
 
-    boolean existsByCardNumberAndCardHolderAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
+    boolean existsByCardNumberAndCardHolderNameAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
             String cardNumber, String cardHolderName, int cardExpirationYear, int cardExpirationMonth, String cardCvv
     );
 
