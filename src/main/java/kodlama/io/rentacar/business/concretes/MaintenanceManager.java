@@ -21,7 +21,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-
 public class MaintenanceManager implements MaintenanceService {
 
     private final MaintenanceRepository repository;

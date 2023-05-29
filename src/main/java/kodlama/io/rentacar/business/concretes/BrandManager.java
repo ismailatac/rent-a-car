@@ -68,14 +68,4 @@ public class BrandManager implements BrandService {
     }
 
 
-//    private void validateBrand(Brand brand){
-//        checkIfNameValid(brand);
-//
-//    }
-//    private void checkIfNameValid(Brand brand){
-//        if(brand.getName().length() < 10 || brand.getName().length() > 20){
-//            throw new IllegalArgumentException("İsim 10 karakterden uzun, 20 karakterden kısa olmalıdır!");
-//        }
-//    }
-
 }
